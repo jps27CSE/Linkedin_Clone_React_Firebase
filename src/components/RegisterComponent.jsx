@@ -1,27 +1,26 @@
 import { useState } from "react";
 import LinkedinLogo from "../assets/linkedinLogo.png";
 import "../Sass/LoginComponent.scss";
-import { LoginAPI, GoogleSignInAPI } from "../api/AuthAPI";
+import { RegisterAPI, GoogleSignInAPI } from "../api/AuthAPI";
 import { Link, useNavigate } from "react-router-dom";
 import GoogleButton from "react-google-button";
 import { toast } from "react-toastify";
-const LoginComponent = () => {
+const RegisterComponent = () => {
+  const navigate = useNavigate();
   const [credentails, setCredentials] = useState({});
-  let navigate = useNavigate();
   const login = async () => {
     try {
-      let res = await LoginAPI(credentails.email, credentails.password);
-      toast.success("Signed In to Linkedin");
+      let res = await RegisterAPI(credentails.email, credentails.password);
+      toast.success("Account Created");
       navigate("/home");
     } catch (error) {
-      toast.error("Plase Check Your Credentials");
+      toast.error("Cannot Create your Account");
     }
   };
 
   const googleSignIn = () => {
     let response = GoogleSignInAPI();
     console.log(response);
-    navigate("/home");
   };
 
   return (
@@ -29,8 +28,7 @@ const LoginComponent = () => {
       <img src={LinkedinLogo} className="linkedinLogo" />
 
       <div className="login-wrapper-inner">
-        <h1 className="heading">Sign in</h1>
-        <p className="sub-heading">Stay updated on your professional world</p>
+        <h1 className="heading">Make the most of your professional life</h1>
 
         <div className="auth-inputs">
           <input
@@ -39,7 +37,7 @@ const LoginComponent = () => {
             }
             type="email"
             className="common-input"
-            placeholder="Email or Phone"
+            placeholder="Email or Phone Number"
           />
           <input
             onChange={(event) =>
@@ -47,11 +45,11 @@ const LoginComponent = () => {
             }
             type="password"
             className="common-input"
-            placeholder="Password"
+            placeholder="Password (6 or more characters)"
           />
         </div>
         <button onClick={login} className="login-btn">
-          Sign in
+          Agree & Join
         </button>
       </div>
       <hr className="hr-text" data-content="or" />
@@ -59,10 +57,10 @@ const LoginComponent = () => {
       <div className="google-btn-container">
         <GoogleButton className="button" onClick={googleSignIn} />
         <p className="go-to-signup">
-          New to LinkedIn?{" "}
+          Already on LinkedIn?{" "}
           <Link>
-            <span className="join-now" onClick={() => navigate("/register")}>
-              Join now
+            <span className="join-now" onClick={() => navigate("/")}>
+              Sign In
             </span>
           </Link>
         </p>
@@ -71,4 +69,4 @@ const LoginComponent = () => {
   );
 };
 
-export default LoginComponent;
+export default RegisterComponent;
