@@ -12,6 +12,7 @@ const RegisterComponent = () => {
     try {
       let res = await RegisterAPI(credentails.email, credentails.password);
       toast.success("Account Created");
+      localStorage.setItem("userEmail", res.user.email);
       navigate("/home");
     } catch (error) {
       toast.error("Cannot Create your Account");
