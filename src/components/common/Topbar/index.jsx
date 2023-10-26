@@ -1,5 +1,6 @@
-import "./index.scss";
+import React, { useEffect, useState } from "react";
 import LinkedinLogo from "../../../assets/linkedinLogo.png";
+import user from "../../../assets/user.png";
 import {
   AiOutlineHome,
   AiOutlineUserSwitch,
@@ -7,36 +8,58 @@ import {
   AiOutlineMessage,
   AiOutlineBell,
 } from "react-icons/ai";
-import user from "../../../assets/user.png";
-import { BsBriefcase } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
-const index = () => {
+import { BsBriefcase } from "react-icons/bs";
+
+import ProfilePopup from "../ProfilePopup";
+import "./index.scss";
+
+export default function Topbar({ currentUser }) {
+  const [popupVisible, setPopupVisible] = useState(false);
+
   let navigate = useNavigate();
   const goToRoute = (route) => {
     navigate(route);
   };
+
+  const displayPopup = () => {
+    setPopupVisible(!popupVisible);
+  };
+
   return (
     <div className="topbar-main">
-      <img className="linkedin-logo" src={LinkedinLogo} alt="" />
+      {popupVisible ? (
+        <div className="popup-position">
+          <ProfilePopup />
+        </div>
+      ) : (
+        <></>
+      )}
+
+      <img className="linkedin-logo" src={LinkedinLogo} alt="LinkedinLogo" />
+
       <div className="react-icons">
-        <AiOutlineSearch size={30} className="react-icon" />
-        <AiOutlineHome
-          onClick={() => goToRoute("/home")}
+        <AiOutlineSearch
           size={30}
           className="react-icon"
+          onClick={() => setIsSearch(true)}
+        />
+        <AiOutlineHome
+          size={30}
+          className="react-icon"
+          onClick={() => goToRoute("/home")}
         />
         <AiOutlineUserSwitch
-          onClick={() => goToRoute("/profile")}
           size={30}
           className="react-icon"
+          onClick={() => goToRoute("/connections")}
         />
         <BsBriefcase size={30} className="react-icon" />
         <AiOutlineMessage size={30} className="react-icon" />
         <AiOutlineBell size={30} className="react-icon" />
       </div>
-      <img src={user} alt="user" className="user-logo" />
+
+      <img className="user-logo" src={user} alt="user" onClick={displayPopup} />
     </div>
   );
-};
-
-export default index;
+}
